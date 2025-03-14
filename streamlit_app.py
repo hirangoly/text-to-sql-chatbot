@@ -4,7 +4,9 @@ import os
 
 st.title("AI-Powered SQL Chatbot")
 
-OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
+OPENAI_API_KEY = st.text_input("OpenAI API Key", type="password")
+
+# OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
 if not OPENAI_API_KEY:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
@@ -21,3 +23,4 @@ else:
         
         # Stream the response to the app using `st.write_stream`.
         st.write_stream(response)
+        st.write(response["results"])
