@@ -1,6 +1,7 @@
 import streamlit as st
 import generate_execute_query as generate_execute_query
 import os
+import pandas as pd
 
 st.title("AI-Powered SQL Chatbot")
 
