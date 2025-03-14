@@ -12,7 +12,7 @@ else:
     os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
     
     # Create an OpenAI client.
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    # client = OpenAI(api_key=OPENAI_API_KEY)
 
     st.write("### Ask your database anything!")
     query = st.text_input("Enter your query in natural language")
