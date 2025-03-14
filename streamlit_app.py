@@ -3,7 +3,7 @@ import streamlit_app as streamlit_app
 
 st.title("AI-Powered SQL Chatbot")
 
-openai_api_key = st.text_input("OpenAI API Key", type="password")
+OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
 if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
