@@ -24,3 +24,15 @@ else:
         # Stream the response to the app using `st.write_stream`.
         st.write_stream(response)
         st.write(response["results"])
+
+        result = response["results"]
+        # Convert result to Pandas DataFrame
+        if isinstance(result, list):  # If result is a list of tuples
+            df = pd.DataFrame(result, columns=["Column1", "Column2", "Column3"])  # Adjust columns accordingly
+        elif isinstance(result, str):  # If result is a string (error handling)
+            df = pd.DataFrame({"Response": [result]})
+        else:
+            df = pd.DataFrame({"Message": ["No valid data returned"]})
+
+        # Display results in a table
+        st.dataframe(df)  # Interactive table
