@@ -6,7 +6,6 @@ st.title("AI-Powered SQL Chatbot")
 
 OPENAI_API_KEY = st.text_input("OpenAI API Key", type="password")
 
-# OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
 if not OPENAI_API_KEY:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
