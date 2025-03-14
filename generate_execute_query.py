@@ -1,5 +1,8 @@
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import openai
 import pymysql
+import jwt
 import datetime
 from typing import List
 from langchain import SQLDatabase
@@ -10,7 +13,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 
-OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
+# OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
 db_config = {
     "host": "database-1.c7ew0quossbs.us-east-1.rds.amazonaws.com",
     "user": "root",
@@ -51,7 +54,7 @@ def initialize_sql_agent():
     try:
         # Note: instead of root, use user that have only have read access for safety and accidental update/delete record
         db = SQLDatabase.from_uri("mysql+pymysql://root:MamaGrentina$100!@database-1.c7ew0quossbs.us-east-1.rds.amazonaws.com:3306/ecommerce")
-        llm = ChatOpenAI(model_name="gpt-4", temperature=0, openai_api_key=OPENAI_API_KEY)
+        llm = ChatOpenAI(model_name="gpt-4", temperature=0)
         schema = get_db_schema()
         print(f"Database Schema: {schema}")  # Debugging
         # Create toolkit with LLM
@@ -79,7 +82,7 @@ def text_to_sql(natural_query: str) -> str:
 
 def generate_query(natural_query: str):
     # Initialize LLM
-    llm = ChatOpenAI(model_name="gpt-4", temperature=0, openai_api_key=OPENAI_API_KEY)
+    llm = ChatOpenAI(model_name="gpt-4", temperature=0)
 
     db_schema = get_db_schema()
 
@@ -89,7 +92,7 @@ def generate_query(natural_query: str):
         template=(
             "You are an expert SQL query generator. Use the provided database schema to create a valid SQL query.\n"
             "Database Schema:\n{schema}\n"
-            "Convert the following question into an SQL SELECT query:\n"
+            "Convert the following question into an SQL SELECT query: and then execute on provided database. show in tabular format or structured data\n"
             "Question: {question}\n"
             "SQL Query:"
         )
