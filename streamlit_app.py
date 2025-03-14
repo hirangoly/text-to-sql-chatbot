@@ -20,4 +20,4 @@ else:
         response = generate_execute_query.execute_query(query)
         
         # Stream the response to the app using `st.write_stream`.
-        st.write_stream(stream)
+        st.write_stream(response)
