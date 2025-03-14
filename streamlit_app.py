@@ -1,5 +1,6 @@
 import streamlit as st
 import streamlit_app as streamlit_app
+import os
 
 st.title("AI-Powered SQL Chatbot")
 
