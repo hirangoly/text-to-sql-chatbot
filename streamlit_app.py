@@ -7,7 +7,9 @@ OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
 if not OPENAI_API_KEY:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
-
+    # Set environment variables
+    os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
+    
     # Create an OpenAI client.
     client = OpenAI(api_key=OPENAI_API_KEY)
 
