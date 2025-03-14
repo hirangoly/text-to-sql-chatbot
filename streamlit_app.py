@@ -4,12 +4,12 @@ import streamlit_app as streamlit_app
 st.title("AI-Powered SQL Chatbot")
 
 OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
-if not openai_api_key:
+if not OPENAI_API_KEY:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
 
     # Create an OpenAI client.
-    client = OpenAI(api_key=openai_api_key)
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
     st.write("### Ask your database anything!")
     query = st.text_input("Enter your query in natural language")
