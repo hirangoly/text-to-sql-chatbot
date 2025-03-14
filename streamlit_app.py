@@ -1,5 +1,5 @@
 import streamlit as st
-import streamlit_app as streamlit_app
+import generate_execute_query as generate_execute_query
 import os
 
 st.title("AI-Powered SQL Chatbot")
@@ -17,7 +17,7 @@ else:
     st.write("### Ask your database anything!")
     query = st.text_input("Enter your query in natural language")
     if st.button("Submit") and query:
-        response = streamlit_app.execute_query(query)
+        response = generate_execute_query.execute_query(query)
         
         # Stream the response to the app using `st.write_stream`.
         st.write_stream(stream)
