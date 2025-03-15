@@ -11,14 +11,8 @@ from langchain.chains import LLMChain
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 
 # OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
-db_config = {
-    "host": "database-1.c7ew0quossbs.us-east-1.rds.amazonaws.com",
-    "user": "root",
-    "password": "MamaGrentina$100!",
-    "database": "ecommerce"
-}
 
-def get_db_connection():
+def get_db_connection(db_config):
     try:
         conn = pymysql.connect(**db_config)
         print("Database connection successful!")
@@ -27,8 +21,8 @@ def get_db_connection():
     except Exception as e:
         print(f"Database connection failed: {e}")   
 
-def get_db_schema():
-    conn = get_db_connection()
+def get_db_schema(db_config):
+    conn = get_db_connection(db_config)
     if conn is None:
         print("Failed to connect to the database")
     else:
@@ -47,12 +41,18 @@ def get_db_schema():
     return schema
 
 
-def initialize_sql_agent():
+def initialize_sql_agent(db_config):
     try:
         # Note: instead of root, use user that have only have read access for safety and accidental update/delete record
-        db = SQLDatabase.from_uri("mysql+pymysql://root:MamaGrentina$100!@database-1.c7ew0quossbs.us-east-1.rds.amazonaws.com:3306/ecommerce")
+        # Create database connection
+        password = urllib.parse.quote_plus(db_config['PASSWORD'])
+        connection_string = (
+            f"mysql+pymysql://{db_config['USER']}:{password}@"
+            f"{db_config['HOST']}:{db_config['PORT']}/{db_config['DATABASE']}"
+        )
+        db = SQLDatabase.from_uri(connection_string)
         llm = ChatOpenAI(model_name="gpt-4", temperature=0)
-        schema = get_db_schema()
+        schema = get_db_schema(db_config)
         print(f"Database Schema: {schema}")  # Debugging
         # Create toolkit with LLM
         toolkit = SQLDatabaseToolkit(
@@ -117,8 +117,8 @@ def generate_query(natural_query: str):
         print(f"Database query execution failed: {e}")  # Debugging
         raise HTTPException(status_code=500, detail=str(e))
 
-def execute_query(natural_query: str):
-    agent = initialize_sql_agent()
+def execute_query(natural_query: str, db_config: dict):
+    agent = initialize_sql_agent(db_config)
     sql_response = agent.run(natural_query)
     print(f"Generated SQL response: {sql_response}")  # Debugging
 
