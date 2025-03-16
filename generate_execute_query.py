@@ -1,16 +1,18 @@
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import openai
 import pymysql
+import jwt
 import datetime
 from typing import List
-from langchain import SQLDatabase
+from langchain_community.utilities import SQLDatabase
 from langchain.chat_models import ChatOpenAI
-from langchain.agents import AgentType
-from langchain.agents import create_sql_agent
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
+import urllib.parse
+from langchain_experimental.sql import SQLDatabaseChain
 
-# OPENAI_API_KEY = st.secrets["openai"]["OPENAI_API_KEY"]
 
 def get_db_connection(db_config):
     try:
@@ -44,29 +46,27 @@ def get_db_schema(db_config):
 def initialize_sql_agent(db_config):
     try:
         # Note: instead of root, use user that have only have read access for safety and accidental update/delete record
-        # Create database connection
         password = urllib.parse.quote_plus(db_config['PASSWORD'])
         connection_string = (
             f"mysql+pymysql://{db_config['USER']}:{password}@"
             f"{db_config['HOST']}:{db_config['PORT']}/{db_config['DATABASE']}"
         )
         db = SQLDatabase.from_uri(connection_string)
+
+        # LLM model
         llm = ChatOpenAI(model_name="gpt-4", temperature=0)
-        schema = get_db_schema(db_config)
-        print(f"Database Schema: {schema}")  # Debugging
+        # schema = get_db_schema(db_config)
+        # print(f"Database Schema: {schema}")  # Debugging
         # Create toolkit with LLM
         toolkit = SQLDatabaseToolkit(
             db=db,
             llm=llm
         )
-        agent_executor = create_sql_agent(
-            llm=llm,
-            toolkit=toolkit,
-            agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-            verbose=True,
-            extra_prompt_data={"schema": schema}
-        )
-        return agent_executor
+
+        # Create SQL execution agent (Equivalent to create_sql_agent)
+        db_chain = SQLDatabaseChain.from_llm(llm=llm, db=db, verbose=True)
+
+        return db_chain
     except Exception as e:
         print(f"Error in create_sql_agent: {e}")  # Log error
         raise HTTPException(status_code=500, detail=str(e))
@@ -118,8 +118,8 @@ def generate_query(natural_query: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 def execute_query(natural_query: str, db_config: dict):
-    agent = initialize_sql_agent(db_config)
-    sql_response = agent.run(natural_query)
+    db_chain = initialize_sql_agent(db_config)
+    sql_response = db_chain.run(natural_query)
     print(f"Generated SQL response: {sql_response}")  # Debugging
 
     return {"query": natural_query, "results": sql_response}
