@@ -32,11 +32,12 @@ OPENAI_API_KEY=your_openai_api_key DATABASE_HOST=your_database_host DATABASE_USE
 streamlit run app.py
 
 **Future Advancement:**
-Python Data Visualization Generation – Generate Python code for data plots automatically.
 
-Dynamic Database Connectivity – Connect to MySQL and execute SQL queries effortlessly.
+* Python Data Visualization Generation – Generate Python code for data plots automatically.
 
-Conversational Memory – Retains context for more meaningful responses.
+* Dynamic Database Connectivity – Connect to MySQL and execute SQL queries effortlessly.
 
-Multi-LLM Support – Select from OpenAI, Llama, or Gemini for enhanced accuracy.
+* Conversational Memory – Retains context for more meaningful responses.
+
+* Multi-LLM Support – Select from OpenAI, Llama, or Gemini for enhanced accuracy.
 
