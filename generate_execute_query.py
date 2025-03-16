@@ -1,6 +1,5 @@
 import openai
 import pymysql
-import jwt
 import datetime
 from typing import List
 from langchain_community.utilities import SQLDatabase
