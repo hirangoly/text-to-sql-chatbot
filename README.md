@@ -35,8 +35,6 @@ streamlit run app.py
 
 * Python Data Visualization Generation – Generate Python code for data plots automatically.
 
-* Dynamic Database Connectivity – Connect to MySQL and execute SQL queries effortlessly.
-
 * Conversational Memory – Retains context for more meaningful responses.
 
 * Multi-LLM Support – Select from OpenAI, Llama, or Gemini for enhanced accuracy.
