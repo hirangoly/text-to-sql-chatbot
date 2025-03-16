@@ -40,6 +40,6 @@ streamlit run app.py
 
 * Multi-LLM Support – Select from OpenAI, Llama, or Gemini for enhanced accuracy.
 
-![image](https://github.com/user-attachments/assets/40bb3ac2-7cbc-45df-a3f0-78aed9d40f87)
+<img width="1315" alt="text-to-sql-chatbot" src="https://github.com/user-attachments/assets/35de1577-81de-423e-95dd-e2dfc9999212" />
 
 
