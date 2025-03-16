@@ -1,6 +1,11 @@
 import streamlit as st
 import generate_execute_query as generate_execute_query
 import os
+import urllib.parse
+from sqlalchemy import create_engine, exc, text
+import mysql.connector
+from mysql.connector import Error
+
 
 st.title("AI-Powered SQL Chatbot")
 
@@ -116,11 +121,11 @@ else:
             # Update the config to the selected DB
             st.session_state.db_config['DATABASE'] = db_choice
 
-    st.write("### Ask your database anything!")
-    query = st.text_input("Enter your query in natural language")
-    if st.button("Submit") and query:
-        response = generate_execute_query.execute_query(query, st.session_state.db_config)
-        
-        # Stream the response to the app using `st.write_stream`.
-        st.write_stream(response)
-        st.write(response["results"])
+        st.write("### Ask your database anything!")
+        query = st.text_input("Enter your query in natural language")
+        if st.button("Submit") and query:
+            response = generate_execute_query.execute_query(query, st.session_state.db_config)
+            
+            # Stream the response to the app using `st.write_stream`.
+            st.write_stream(response)
+            st.write(response["results"])
