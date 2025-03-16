@@ -28,7 +28,7 @@ Create a .env file in the project directory and add:
 
 OPENAI_API_KEY=your_openai_api_key DATABASE_HOST=your_database_host DATABASE_USER=your_database_user DATABASE_PASSWORD=your_database_password
 
-4️⃣ ** Run the Streamlit App**
+4️⃣ **Run the Streamlit App**
 
 streamlit run app.py
 
