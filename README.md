@@ -1,6 +1,8 @@
 # text-to-sql-chatbot
 AI chatbot that take text, convert to SQL query and run to the database
 
+text-to-sql-llmagent.streamlit.app/
+
 GenAI SQL & Python Agent
 
 A Streamlit-based GenAI assistant for querying SQL databases using Large Language Models (LLMs). This AI-powered tool allows users to interact with databases using natural language.
