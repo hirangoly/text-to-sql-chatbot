@@ -1,7 +1,7 @@
 # text-to-sql-chatbot
 AI chatbot that take text, convert to SQL query and run to the database
 
-text-to-sql-llmagent.streamlit.app/
+[text-to-sql-llmagent.streamlit.app/](https://text-to-sql-chatbot.streamlit.app/)
 
 GenAI SQL & Python Agent
 
